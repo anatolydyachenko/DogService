@@ -1,4 +1,4 @@
-package JsonConstructor;
+package Json;
 
 import app.Dog;
 import com.google.gson.Gson;

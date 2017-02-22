@@ -1,17 +1,13 @@
 package rest;
 
 import app.Dog;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.json.simple.parser.ParseException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-import static JsonConstructor.JsonHelper.mapStringStringToJson;
+import static Json.JsonHelper.mapStringStringToJson;
 
 @Path("/")
 public class DogService {
