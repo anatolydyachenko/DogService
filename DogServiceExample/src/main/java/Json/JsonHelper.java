@@ -18,9 +18,9 @@ public class JsonHelper {
 //        return gson.fromJson(json, TT_mapStringString);
 //    }
 
-    public static String mapStringStringToJson(Map<String, Dog> map) {
+    public static String mapStringStringToJson(Map<Integer, Dog> map) {
         if (map == null)
-            map = new HashMap<String, Dog>();
+            map = new HashMap<Integer, Dog>();
         return gson.toJson(map);
     }
 }

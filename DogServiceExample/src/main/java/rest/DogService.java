@@ -13,17 +13,17 @@ import static Json.JsonHelper.mapStringStringToJson;
 public class DogService {
 
 	private static Integer id = 0;
-	private static Map<String, Dog> dogs = new HashMap<String, Dog>();
+	private static Map<Integer, Dog> dogs = new HashMap<Integer, Dog>();
 
-//	static {
-//		Dog dog0 = new Dog();
-//		dog0.setId(String.valueOf(id));
-//		id++;
-//		dog0.setName("Loly");
-//		dog0.setDateOfBirth("08.11.2013");
-//		dog0.setHeight(50);
-//		dog0.setWeight(7);
-//		dogs.put(dog0.getId(), dog0);
+	static {
+		Dog dog0 = new Dog();
+		dog0.setId(id);
+		id++;
+		dog0.setName("Loly");
+		dog0.setDateOfBirth("08.11.2013");
+		dog0.setHeight(50);
+		dog0.setWeight(7);
+		dogs.put(dog0.getId(), dog0);
 //
 //		Dog dog1 = new Dog();
 //		dog1.setId(String.valueOf(id));
@@ -42,7 +42,7 @@ public class DogService {
 //		dog2.setHeight(61);
 //		dog2.setWeight(12);
 //		dogs.put(dog2.getId(), dog2);
-//	}
+	}
 
 	@GET
 	@Path("dogs")

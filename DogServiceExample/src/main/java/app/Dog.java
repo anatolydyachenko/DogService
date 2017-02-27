@@ -9,66 +9,84 @@ import java.util.Date;
  * Created by adyachenko on 7/22/2016.!
  */
 public class Dog {
-    private String name, dateOfBirthString;
-    private Number height, weight;
+    private int id;
+    private String name;
+    private Date dateOfBirth;
+    private int height;
+    private int weight;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        if (name.length()>=1 && name.length()<=100){
+        if (name.length() >= 1 && name.length() <= 100) {
             this.name = name;
-        }
-        else {
+        } else {
             System.out.println("Name should has length in range 1-100");
         }
 
     }
 
-    public String getdateOfBirthString() {
-        return dateOfBirthString;
+    public String getDateOfBirth() {
+        DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return simpleDateFormat.format(dateOfBirth);
     }
 
-    public void setDateOfBirthString(String dateOfBirthString) {
-        DateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date currentDate = new Date();
-        Date dateOfBirth = new Date();
+    public void setDateOfBirth(String dateOfBirthString) {
+        DateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
-            dateOfBirth = simpleDateFormat.parse(dateOfBirthString);
+            this.dateOfBirth = simpleDateFormat.parse(dateOfBirthString);
         } catch (ParseException e) {
-            //e.printStackTrace();
-            System.out.println("Birth date should fit date formate 'yyyy/MM/dd'. Error message: " + e.getMessage());
+            System.out.println(e);
         }
-
-        if (currentDate.after(dateOfBirth)){
-            this.dateOfBirthString = dateOfBirthString;
-        }
-        else {
-            System.out.println("Date of birth must be before current date");
-        }
+//        DateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//        Date currentDate = new Date();
+//        try {
+//            dateOfBirth = simpleDateFormat.parse(dateOfBirth);
+//        } catch (ParseException e) {
+//            //e.printStackTrace();
+//            System.out.println("Birth date should fit date formate 'yyyy/MM/dd'. Error message: " + e.getMessage());
+//        }
+//
+//        if (currentDate.after(dateOfBirth)){
+//            this.dateOfBirth = dateOfBirth;
+//        }
+//        else {
+//            System.out.println("Date of birth must be before current date");
+//        }
     }
 
-    public Number getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(Number height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public Number getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(Number weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Dog dog = new Dog();
-        dog.setDateOfBirthString("");
-        System.out.println(dog.getdateOfBirthString());
+        dog.setDateOfBirth("1990/10/10");
+        String s = dog.getDateOfBirth();
+        System.out.println(s);
     }
 }
 
