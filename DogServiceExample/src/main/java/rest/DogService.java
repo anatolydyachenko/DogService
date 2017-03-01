@@ -1,39 +1,39 @@
 package rest;
 
+import Json.JsonHelper;
 import app.Dog;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
-
-import static Json.JsonHelper.mapStringStringToJson;
+import com.google.gson.*;
 
 @Path("/")
 public class DogService {
 
-	private static Integer id = 0;
-	private static Map<Integer, Dog> dogs = new HashMap<Integer, Dog>();
+    private static Integer id = 0;
+    private static Map<Integer, Dog> dogs = new HashMap<Integer, Dog>();
 
-	static {
-		Dog dog0 = new Dog();
-		dog0.setId(id);
+    static {
+        Dog dog0 = new Dog();
+        dog0.setId(id);
+        id++;
+        dog0.setName("Loly");
+        dog0.setDateOfBirth("08.11.2013");
+        dog0.setHeight(50);
+        dog0.setWeight(7);
+        dogs.put(dog0.getId(), dog0);
+
+		Dog dog1 = new Dog();
+		dog1.setId(id);
 		id++;
-		dog0.setName("Loly");
-		dog0.setDateOfBirth("08.11.2013");
-		dog0.setHeight(50);
-		dog0.setWeight(7);
-		dogs.put(dog0.getId(), dog0);
-//
-//		Dog dog1 = new Dog();
-//		dog1.setId(String.valueOf(id));
-//		id++;
-//		dog1.setName("Pony");
-//		dog1.setDateOfBirth("05.10.2011");
-//		dog1.setHeight(50);
-//		dog1.setWeight(7);
-//		dogs.put(dog1.getId(), dog1);
-//
+		dog1.setName("Pony");
+		dog1.setDateOfBirth("05.10.2011");
+		dog1.setHeight(50);
+		dog1.setWeight(7);
+		dogs.put(dog1.getId(), dog1);
+
 //		Dog dog2 = new Dog();
 //		dog2.setId(String.valueOf(id));
 //		id++;
@@ -42,28 +42,27 @@ public class DogService {
 //		dog2.setHeight(61);
 //		dog2.setWeight(12);
 //		dogs.put(dog2.getId(), dog2);
-	}
+    }
+
+    @GET
+    @Path("dogs")
+    @Produces("application/json")
+    public Response printMessage() {
+        return Response.status(200).entity(JsonHelper.mapToJson(dogs)).build();
+    }
+
 
 	@GET
-	@Path("dogs")
+	@Path("dogs/{id}")
 	@Produces("application/json")
-	public Response printMessage() {
-		String jsonResponse = mapStringStringToJson(dogs);
+	public Response printMessage(@PathParam("id") String id) throws ParseException {
+		JsonElement jelement = new JsonParser().parse(mapToJson(dogs));
+		JsonObject jobject = jelement.getAsJsonObject();
+		JsonObject result = jobject.getAsJsonObject(id);
 
-		return Response.status(200).entity(jsonResponse).build();
+		return Response.status(200).entity(result.toString()).build();
 	}
 
-//	@GET
-//	@Path("dogs/{id}")
-//	@Produces("application/json")
-//	public Response printMessage(@PathParam("id") String id) throws ParseException {
-//		JsonElement jelement = new JsonParser().parse(mapStringStringToJson(dogs));
-//		JsonObject jobject = jelement.getAsJsonObject();
-//		JsonObject result = jobject.getAsJsonObject(id);
-//
-//		return Response.status(200).entity(result.toString()).build();
-//	}
-//
 //	@POST
 //	@Path("dogs/dog")
 //	@Consumes("application/json")

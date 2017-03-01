@@ -43,7 +43,7 @@ public class Dog {
     }
 
     public void setDateOfBirth(String dateOfBirthString) {
-        DateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         try {
             this.dateOfBirth = simpleDateFormat.parse(dateOfBirthString);
         } catch (ParseException e) {
