@@ -3,11 +3,16 @@ package rest;
 import Json.JsonHelper;
 import app.Dog;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.json.simple.parser.ParseException;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
-import com.google.gson.*;
+
 
 @Path("/")
 public class DogService {
@@ -53,88 +58,84 @@ public class DogService {
 
 
 	@GET
-	@Path("dogs/{id}")
+	@Path("dog/{id}")
 	@Produces("application/json")
-	public Response printMessage(@PathParam("id") String id) throws ParseException {
-		JsonElement jelement = new JsonParser().parse(mapToJson(dogs));
+	public Response printMessage(@PathParam("id") String id) {
+		JsonElement jelement = new JsonParser().parse(JsonHelper.mapToJson(dogs));
 		JsonObject jobject = jelement.getAsJsonObject();
 		JsonObject result = jobject.getAsJsonObject(id);
 
 		return Response.status(200).entity(result.toString()).build();
 	}
 
-//	@POST
-//	@Path("dogs/dog")
-//	@Consumes("application/json")
-//	public Response createNewDog(String dogParametersInJson) {
-//
-//		JsonElement jelement = new JsonParser().parse(dogParametersInJson);
-//		JsonObject jobject = jelement.getAsJsonObject();
-//		JsonObject jsonObject = jobject.getAsJsonObject();
-//
-//		String idOfNewDog = id.toString();
-//		String nameOfNewDog = jsonObject.get("name").getAsString();
-//		String dateOfBirthOfNewDog = jsonObject.get("dateOfBirth").getAsString();
-//		Integer heightOfNewDog = jsonObject.get("height").getAsInt();
-//		Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
-//
-//		Dog dog = new Dog();
-//		dog.setId(String.valueOf(id));
-//		id++;
-//		dog.setName(nameOfNewDog);
-//		dog.setDateOfBirth(dateOfBirthOfNewDog);
-//		dog.setHeight(heightOfNewDog);
-//		dog.setWeight(weightOfNewDog);
-//		dogs.put(dog.getId(), dog);
-//
-//		String outputMessage = "Dog with id " + idOfNewDog + " has been created";
-//
-//		return Response.status(200).entity(outputMessage).build();
-//	}
-//
-//	@PUT
-//	@Path("dogs/dog")
-//	@Consumes("application/json")
-//	public Response updateTheDog(String dogParametersInJson) {
-//
-//		JsonElement jelement = new JsonParser().parse(dogParametersInJson);
-//		JsonObject jobject = jelement.getAsJsonObject();
-//		JsonObject jsonObject = jobject.getAsJsonObject();
-//
-//		String idOfNewDog = jsonObject.get("id").getAsString();
-//		String nameOfNewDog = jsonObject.get("name").getAsString();
-//		String dateOfBirthOfNewDog = jsonObject.get("dateOfBirth").getAsString();
-//		Integer heightOfNewDog = jsonObject.get("height").getAsInt();
-//		Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
-//
-//		Dog dog = new Dog();
-//		dog.setId(idOfNewDog);
-//		dog.setName(nameOfNewDog);
-//		dog.setDateOfBirth(dateOfBirthOfNewDog);
-//		dog.setHeight(heightOfNewDog);
-//		dog.setWeight(weightOfNewDog);
-//		dogs.put(dog.getId(), dog);
-//
-//		String outputMessage = "Dog with id " + idOfNewDog + " has been updated";
-//
-//		return Response.status(200).entity(outputMessage).build();
-//	}
-//
-//	@DELETE
-//	@Path("dogs/dog")
-//	@Consumes("application/json")
-//	public Response deleteTheDog(String dogParametersInJson) {
-//
-//		JsonElement jelement = new JsonParser().parse(dogParametersInJson);
-//		JsonObject jobject = jelement.getAsJsonObject();
-//		JsonObject jsonObject = jobject.getAsJsonObject();
-//
-//		String idOfNewDog = jsonObject.get("id").getAsString();
-//
-//		dogs.remove(idOfNewDog);
-//
-//		String outputMessage = "Dog with id " + idOfNewDog + " has been removed";
-//
-//		return Response.status(200).entity(outputMessage).build();
-//	}
+	@POST
+	@Path("dog")
+	@Consumes("application/json")
+	public Response createNewDog(String dogJson) {
+
+		JsonElement jelement = new JsonParser().parse(dogJson);
+		JsonObject jobject = jelement.getAsJsonObject();
+		JsonObject jsonObject = jobject.getAsJsonObject();
+
+		String idOfNewDog = id.toString();
+		String nameOfNewDog = jsonObject.get("name").getAsString();
+		String dateOfBirthOfNewDog = jsonObject.get("dateOfBirth").getAsString();
+		Integer heightOfNewDog = jsonObject.get("height").getAsInt();
+		Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
+
+		Dog dog = new Dog();
+		dog.setId(id);
+		id++;
+		dog.setName(nameOfNewDog);
+		dog.setDateOfBirth(dateOfBirthOfNewDog);
+		dog.setHeight(heightOfNewDog);
+		dog.setWeight(weightOfNewDog);
+		dogs.put(dog.getId(), dog);
+
+		String outputMessage = "Dog has been created. Id = " + idOfNewDog;
+
+		return Response.status(200).entity(outputMessage).build();
+	}
+
+	@PUT
+	@Path("dog")
+	@Consumes("application/json")
+	public Response updateTheDog(String dogJson) {
+
+		JsonElement jelement = new JsonParser().parse(dogJson);
+		JsonObject jobject = jelement.getAsJsonObject();
+		JsonObject jsonObject = jobject.getAsJsonObject();
+
+		int idOfNewDog = jsonObject.get("id").getAsInt();
+		String nameOfNewDog = jsonObject.get("name").getAsString();
+		String dateOfBirthOfNewDog = jsonObject.get("dateOfBirth").getAsString();
+		Integer heightOfNewDog = jsonObject.get("height").getAsInt();
+		Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
+
+		Dog dog = new Dog();
+		dog.setId(idOfNewDog);
+		dog.setName(nameOfNewDog);
+		dog.setDateOfBirth(dateOfBirthOfNewDog);
+		dog.setHeight(heightOfNewDog);
+		dog.setWeight(weightOfNewDog);
+		dogs.put(dog.getId(), dog);
+
+		String outputMessage = "Dog has been updated. Id =  " + idOfNewDog;
+
+		return Response.status(200).entity(outputMessage).build();
+	}
+
+	@DELETE
+	@Path("dog/{id}")
+	@Consumes("application/json")
+	public Response deleteTheDog(@PathParam("id") String id) {
+
+		int idOfDog = Integer.valueOf(id);
+
+		dogs.remove(idOfDog);
+
+		String outputMessage = "Dog has been removed. Id = " + idOfDog;
+
+		return Response.status(200).entity(outputMessage).build();
+	}
 }
