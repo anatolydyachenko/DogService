@@ -44,26 +44,19 @@ public class Dog {
 
     public void setDateOfBirth(String dateOfBirthString) {
         DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date currentDate = new Date();
         try {
-            this.dateOfBirth = simpleDateFormat.parse(dateOfBirthString);
+            if (simpleDateFormat.parse(dateOfBirthString).after(currentDate)){
+                this.dateOfBirth = simpleDateFormat.parse(dateOfBirthString);
+            }
+            else{
+                System.out.println("DateOfBirth can not be earlier, than current date");
+            }
+
         } catch (ParseException e) {
-            System.out.println(e);
+            System.out.println("Date has incorrect format. It should be dd.MM.yyyy");
+//            System.out.println(e);
         }
-//        DateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-//        Date currentDate = new Date();
-//        try {
-//            dateOfBirth = simpleDateFormat.parse(dateOfBirth);
-//        } catch (ParseException e) {
-//            //e.printStackTrace();
-//            System.out.println("Birth date should fit date formate 'yyyy/MM/dd'. Error message: " + e.getMessage());
-//        }
-//
-//        if (currentDate.after(dateOfBirth)){
-//            this.dateOfBirth = dateOfBirth;
-//        }
-//        else {
-//            System.out.println("Date of birth must be before current date");
-//        }
     }
 
     public int getHeight() {
@@ -84,7 +77,7 @@ public class Dog {
 
     public static void main(String[] args) {
         Dog dog = new Dog();
-        dog.setDateOfBirth("1990/10/10");
+        dog.setDateOfBirth("11.03.2017");
         String s = dog.getDateOfBirth();
         System.out.println(s);
     }
