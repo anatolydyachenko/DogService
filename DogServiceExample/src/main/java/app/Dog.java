@@ -39,17 +39,19 @@ public class Dog {
 
     public String getDateOfBirth() {
         DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return simpleDateFormat.format(dateOfBirth);
+        if (dateOfBirth != null) {
+            return simpleDateFormat.format(dateOfBirth);
+        }
+        else return null;
     }
 
     public void setDateOfBirth(String dateOfBirthString) {
         DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date currentDate = new Date();
         try {
-            if (simpleDateFormat.parse(dateOfBirthString).after(currentDate)){
+            if (simpleDateFormat.parse(dateOfBirthString).after(currentDate)) {
                 this.dateOfBirth = simpleDateFormat.parse(dateOfBirthString);
-            }
-            else{
+            } else {
                 System.out.println("DateOfBirth can not be earlier, than current date");
             }
 

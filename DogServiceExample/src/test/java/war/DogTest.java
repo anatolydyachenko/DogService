@@ -1,10 +1,22 @@
 package war;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import junit.framework.Assert;
 import org.junit.Test;
 import app.Dog;
 
 public class DogTest {
+    DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    Calendar c = Calendar.getInstance();
+    String dateToSubmit;
+
     @Test
     public void setNameForDog() {
         Dog dog1 = new Dog();
@@ -23,10 +35,29 @@ public class DogTest {
     }
 
     @Test
-    public void setDateOfBirth() {
+    public void setDateOfBirthForDog() {
         Dog dog1 = new Dog();
-//        String tempDateOfBirth = dog1.getDateOfBirth();
         dog1.setDateOfBirth(""); //try to set empty
-        Assert.assertTrue("12.12.2012" == dog1.getName());
+        Assert.assertTrue(dog1.getDateOfBirth() == null);
+
+        // check day before today
+        c.setTime(new Date());
+        c.add(Calendar.DATE,-1);
+        dateToSubmit = simpleDateFormat.format(c.getTime());
+        dog1.setDateOfBirth(dateToSubmit);
+        Assert.assertTrue(dog1.getDateOfBirth()==null);
+
+        // check today date
+        dateToSubmit = simpleDateFormat.format(new Date());
+        dog1.setDateOfBirth(dateToSubmit);
+        Assert.assertTrue(dog1.getDateOfBirth()==null);
+
+        // check day after today
+        c.setTime(new Date());
+        c.add(Calendar.DATE,1);
+        dateToSubmit = simpleDateFormat.format(c.getTime());
+        dog1.setDateOfBirth(dateToSubmit);
+        Assert.assertTrue(dog1.getDateOfBirth().equals(dateToSubmit));
+
     }
 }
