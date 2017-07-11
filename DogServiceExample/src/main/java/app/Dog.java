@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * Created by adyachenko on 7/22/2016.!
- * test
  */
 public class Dog {
     private int id;
