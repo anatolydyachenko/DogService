@@ -5,7 +5,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import com.common.app.Dog;
 

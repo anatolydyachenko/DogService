@@ -72,7 +72,8 @@ public class Dog {
             }
 
         } catch (ParseException e) {
-            System.out.println("Date has incorrect format. It should be dd.MM.yyyy, but it is: \"" + dateOfBirth + "\". Value is not updated.");
+            throw new RuntimeException("Date has incorrect format. It should be dd.MM.yyyy", e); // todo create Validation exception, use for all setters
+            //System.out.println("Date has incorrect format. It should be dd.MM.yyyy, but it is: \"" + dateOfBirth + "\". Value is not updated.");
 //            System.out.println(e);
         }
     }

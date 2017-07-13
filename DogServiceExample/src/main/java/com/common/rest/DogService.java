@@ -18,19 +18,19 @@ public class DogService {
 
     private static Integer id = 0;
     private static Map<Integer, Dog> dogs = new HashMap<Integer, Dog>();
+    // todo read about DAO/DTO/Service separation
 
     static {
-        Dog dog0 = new Dog(id, "Rex", "08.11.2013", 40, 8);
-        incrementDogId();
+        Dog dog0 = makeNewDog(new Dog(id, "Rex", "08.11.2013", 40, 8));
         dogs.put(dog0.getId(), dog0);
 
-        Dog dog1 = new Dog(id, "Bobik", "05.10.2011", 20, 3);
-        incrementDogId();
+        Dog dog1 = makeNewDog(new Dog(id, "Bobik", "05.10.2011", 20, 3));
         dogs.put(dog1.getId(), dog1);
     }
-
-    public static void incrementDogId() {
-        id++;
+    
+    private static Dog makeNewDog(Dog dog) {
+        dog.setId(id++);
+        return dog;
     }
 
     @GET
@@ -43,13 +43,13 @@ public class DogService {
     @GET
     @Path("dog/{id}")
     @Produces("application/json")
-    public Response printDog(@PathParam("id") String id) {
-        int idInt = Integer.valueOf(id);
-        if (dogs.containsKey(idInt)) {
-            String result = JsonHelper.mapToJson(dogs.get(idInt));
+    public Response printDog(@PathParam("id") int id) {
+        //int idInt = Integer.valueOf(id);
+        if (dogs.containsKey(id)) {
+            String result = JsonHelper.mapToJson(dogs.get(id));
             return Response.status(200).entity(result).build();
         }
-        return Response.status(404).build();
+        return Response.status(404).build(); // todo throw DogNotFound
     }
 
     @POST
@@ -57,9 +57,8 @@ public class DogService {
     @Consumes("application/json")
     public Response createNewDog(String dogJson) {
 
-        JsonElement jelement = new JsonParser().parse(dogJson);
-        JsonObject jobject = jelement.getAsJsonObject();
-        JsonObject jsonObject = jobject.getAsJsonObject();
+        JsonElement jelement = new JsonParser().parse(dogJson); // todo automatic parsing
+        JsonObject jsonObject = jelement.getAsJsonObject();
 
         String idOfNewDog = id.toString();
         String nameOfNewDog = jsonObject.get("name").getAsString();
@@ -67,8 +66,7 @@ public class DogService {
         Integer heightOfNewDog = jsonObject.get("height").getAsInt();
         Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
 
-        Dog dog = new Dog(id, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog);
-        incrementDogId();
+        Dog dog = makeNewDog(new Dog(id, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog));
         dogs.put(dog.getId(), dog);
 
         String outputMessage = "Dog has been created. Id = " + idOfNewDog;
@@ -82,8 +80,7 @@ public class DogService {
     public Response updateTheDog(String dogJson) {
 
         JsonElement jelement = new JsonParser().parse(dogJson);
-        JsonObject jobject = jelement.getAsJsonObject();
-        JsonObject jsonObject = jobject.getAsJsonObject();
+        JsonObject jsonObject = jelement.getAsJsonObject();
 
         int idOfNewDog = jsonObject.get("id").getAsInt();
         String nameOfNewDog = jsonObject.get("name").getAsString();
@@ -91,9 +88,13 @@ public class DogService {
         Integer heightOfNewDog = jsonObject.get("height").getAsInt();
         Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
 
-        Dog dog = new Dog(idOfNewDog, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog);
-        if (idOfNewDog >= id) incrementDogId();
-        dogs.put(dog.getId(), dog);
+        Dog dog = dogs.get(idOfNewDog);
+        if(dog == null) throw new DogNotFoundException("No dog with id" + idOfNewDog);
+        
+        dog.setName(nameOfNewDog);
+        dog.setDateOfBirth(dateOfBirthOfNewDog);
+        dog.setHeight(heightOfNewDog);
+        dog.setWeight(weightOfNewDog);
 
         String outputMessage = "Dog has been updated. Id =  " + idOfNewDog;
 
@@ -109,5 +110,11 @@ public class DogService {
         dogs.remove(idOfDog);
         String outputMessage = "Dog has been removed. Id = " + idOfDog;
         return Response.status(200).entity(outputMessage).build();
+    }
+    
+    private class DogNotFoundException extends RuntimeException {
+        DogNotFoundException(String message) {
+            super(message);
+        }
     }
 }
