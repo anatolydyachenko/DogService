@@ -106,7 +106,7 @@ public class DogTest {
 
     @Test
     public void getForDog() {
-        Dog dog1 = new Dog(10, "TestName", "25.05.2010", 15, 25, true);
+        Dog dog1 = new Dog(10, "TestName", "25.05.2010", 15, 25);
         Assert.assertEquals(dog1.getId(), 10);
         Assert.assertEquals(dog1.getName(), "TestName");
         Assert.assertEquals(dog1.getDateOfBirth(), "25.05.2010");

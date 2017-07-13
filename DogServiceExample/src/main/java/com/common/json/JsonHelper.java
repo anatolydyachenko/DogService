@@ -17,9 +17,7 @@ public class JsonHelper {
         return gson.toJson(map);
     }
 
-    public static String JsonObjectToJson(JsonObject jsonObject) {
-        if (jsonObject == null)
-            jsonObject = new JsonObject();
-        return gson.toJson(jsonObject);
+    public static String mapToJson(Dog dog) {
+        return gson.toJson(dog);
     }
 }

@@ -4,12 +4,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import com.common.rest.DogService;
+
 
 /**
  * Created by adyachenko on 7/22/2016.!
  */
 public class Dog {
+    private static final String DATE_FORMAT = "dd.MM.yyyy";
+
     private int id;
     private String name;
     private String dateOfBirth;
@@ -22,16 +24,14 @@ public class Dog {
         dateOfBirth = null;
         height = -1;
         weight = -1;
-        DogService.incrementDogId();
     }
 
-    public Dog(int id, String name, String dateOfBirth, int height, int weight, boolean ifIncrementDogId) {
+    public Dog(int id, String name, String dateOfBirth, int height, int weight) {
         this.setId(id);
         this.setName(name);
         this.setDateOfBirth(dateOfBirth);
         this.setHeight(height);
         this.setWeight(weight);
-        if (ifIncrementDogId) DogService.incrementDogId();
     }
 
     public int getId() {
@@ -60,14 +60,14 @@ public class Dog {
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
         try {
             Date currentDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
             Date dateOfBirthDate = simpleDateFormat.parse(dateOfBirth);
 
-            if (dateOfBirthDate.before(currentDate))
+            if (dateOfBirthDate.before(currentDate)) {
                 this.dateOfBirth = dateOfBirth;
-            else {
+            } else {
                 System.out.println("DateOfBirth should be before current date. Value is not updated. DateOfBirth date: " + dateOfBirth + ". Current date: " + simpleDateFormat.format(new Date()));
             }
 
@@ -82,10 +82,11 @@ public class Dog {
     }
 
     public void setHeight(int height) {
-        if (height > 0)
+        if (height > 0) {
             this.height = height;
-        else
+        } else {
             System.out.println("Height should be positive: " + height + ". Value is not updated");
+        }
     }
 
     public int getWeight() {
@@ -93,10 +94,11 @@ public class Dog {
     }
 
     public void setWeight(int weight) {
-        if (weight > 0)
+        if (weight > 0) {
             this.weight = weight;
-        else
+        } else {
             System.out.println("Weight should be positive: " + weight + ". Value is not updated");
+        }
     }
 }
 

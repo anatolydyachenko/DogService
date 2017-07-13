@@ -20,10 +20,12 @@ public class DogService {
     private static Map<Integer, Dog> dogs = new HashMap<Integer, Dog>();
 
     static {
-        Dog dog0 = new Dog(id, "Rex", "08.11.2013", 40, 8, true);
+        Dog dog0 = new Dog(id, "Rex", "08.11.2013", 40, 8);
+        incrementDogId();
         dogs.put(dog0.getId(), dog0);
 
-        Dog dog1 = new Dog(id, "Bobik", "05.10.2011", 20, 3, true);
+        Dog dog1 = new Dog(id, "Bobik", "05.10.2011", 20, 3);
+        incrementDogId();
         dogs.put(dog1.getId(), dog1);
     }
 
@@ -42,11 +44,12 @@ public class DogService {
     @Path("dog/{id}")
     @Produces("application/json")
     public Response printDog(@PathParam("id") String id) {
-        JsonElement jelement = new JsonParser().parse(JsonHelper.mapToJson(dogs));
-        JsonObject jobject = jelement.getAsJsonObject();
-        JsonObject result = jobject.getAsJsonObject(id);
-
-        return Response.status(200).entity(JsonHelper.JsonObjectToJson(result)).build();
+        int idInt = Integer.valueOf(id);
+        if (dogs.containsKey(idInt)) {
+            String result = JsonHelper.mapToJson(dogs.get(idInt));
+            return Response.status(200).entity(result).build();
+        }
+        return Response.status(404).build();
     }
 
     @POST
@@ -64,7 +67,8 @@ public class DogService {
         Integer heightOfNewDog = jsonObject.get("height").getAsInt();
         Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
 
-        Dog dog = new Dog(id, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog, true);
+        Dog dog = new Dog(id, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog);
+        incrementDogId();
         dogs.put(dog.getId(), dog);
 
         String outputMessage = "Dog has been created. Id = " + idOfNewDog;
@@ -86,10 +90,9 @@ public class DogService {
         String dateOfBirthOfNewDog = jsonObject.get("dateOfBirth").getAsString();
         Integer heightOfNewDog = jsonObject.get("height").getAsInt();
         Integer weightOfNewDog = jsonObject.get("weight").getAsInt();
-        boolean ifIncrementDogId = false;
-        if (idOfNewDog >= id) ifIncrementDogId = true;
 
-        Dog dog = new Dog(idOfNewDog, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog, ifIncrementDogId);
+        Dog dog = new Dog(idOfNewDog, nameOfNewDog, dateOfBirthOfNewDog, heightOfNewDog, weightOfNewDog);
+        if (idOfNewDog >= id) incrementDogId();
         dogs.put(dog.getId(), dog);
 
         String outputMessage = "Dog has been updated. Id =  " + idOfNewDog;
