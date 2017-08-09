@@ -10,6 +10,8 @@ import org.junit.Test;
 import com.common.app.Dog;
 
 public class DogTest {
+    public static final String MAX_NAME = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+
     DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
     Calendar c = Calendar.getInstance();
     String dateToSubmit;
@@ -28,81 +30,117 @@ public class DogTest {
     }
 
     @Test
-    public void setNameForDog() {
+    public void setName() {
         Dog dog1 = new Dog();
-        String tempName = dog1.getName();
-        dog1.setName(""); //try to set empty
-        Assert.assertEquals(tempName, dog1.getName());
-
-        dog1.setName("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901"); //try to set >101 symbol
-        Assert.assertEquals(tempName, dog1.getName());
-
-        dog1.setName("q"); //try to enter min value
+        //try to enter min value
+        dog1.setName("q");
         Assert.assertEquals(dog1.getName(), "q");
 
-        dog1.setName("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"); //try to enter max value
-        Assert.assertEquals(dog1.getName(), "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+        //try to enter max value
+        dog1.setName(MAX_NAME);
+        Assert.assertEquals(dog1.getName(), MAX_NAME);
     }
 
-    @Test
-    public void setDateOfBirthForDog() {
+    @Test (expected = RuntimeException.class)
+    public void setNameEmpty() throws RuntimeException{
+        Dog dog1 = new Dog();
+        //try to set empty
+        dog1.setName("");
+    }
+
+    @Test (expected = RuntimeException.class)
+    public void setNameBig() throws RuntimeException {
+        Dog dog1 = new Dog();
+        //try to set 101 symbol
+        dog1.setName(MAX_NAME + 1);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void setDateOfBirthEmpty() throws RuntimeException {
         Dog dog1 = new Dog();
         //try to set empty
         dog1.setDateOfBirth("");
-        Assert.assertNull(dog1.getDateOfBirth());
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void setDateOfBirthIncorrectFormat() throws RuntimeException {
+        Dog dog1 = new Dog();
         //try to set incorrect format
         dog1.setDateOfBirth("qwerty");
-        Assert.assertNull(dog1.getDateOfBirth());
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void setDateOfBirthAfterToday() throws RuntimeException {
+        Dog dog1 = new Dog();
         // check day after today
         c.setTime(new Date());
         c.add(Calendar.DATE, 1);
         dateToSubmit = simpleDateFormat.format(c.getTime());
         dog1.setDateOfBirth(dateToSubmit);
-        Assert.assertNull(dog1.getDateOfBirth());
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void setDateOfBirthToday() throws RuntimeException {
+        Dog dog1 = new Dog();
         // check today date
         dateToSubmit = simpleDateFormat.format(new Date());
         dog1.setDateOfBirth(dateToSubmit);
-        Assert.assertNull(null);
+    }
 
+    @Test
+    public void setDateOfBirthBeforeToday() {
+        Dog dog1 = new Dog();
         // check day before today
         c.setTime(new Date());
         c.add(Calendar.DATE, -1);
         dateToSubmit = simpleDateFormat.format(c.getTime());
         dog1.setDateOfBirth(dateToSubmit);
         Assert.assertEquals(dog1.getDateOfBirth(), dateToSubmit);
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void setHeightForDogNegative() throws RuntimeException {
+        Dog dog1 = new Dog();
+        int tmpHeight = dog1.getHeight();
+        dog1.setHeight(-5); //how to check, that even when exception was thrown, that value was not changed?
+//        Assert.assertEquals(dog1.getHeight(), tmpHeight);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void setHeightForDogZero() throws RuntimeException {
+        Dog dog1 = new Dog();
+        int tmpHeight = dog1.getHeight();
+        dog1.setHeight(0);
+//        Assert.assertEquals(dog1.getHeight(), tmpHeight);
     }
 
     @Test
-    public void setHeightForDog() {
+    public void setHeightForDogPositive() {
         Dog dog1 = new Dog();
-        int tmpHeight = dog1.getHeight();
-        dog1.setHeight(-5);
-        Assert.assertEquals(dog1.getHeight(), tmpHeight);
-
-        dog1.setHeight(0);
-        Assert.assertEquals(dog1.getHeight(), tmpHeight);
-
         dog1.setHeight(1);
         Assert.assertEquals(dog1.getHeight(), 1);
     }
 
-    @Test
-    public void setWeightForDog() {
+    @Test(expected = RuntimeException.class)
+    public void setWeightForDogNegative() throws RuntimeException {
         Dog dog1 = new Dog();
         int tmpWeight = dog1.getWeight();
         dog1.setWeight(-5);
-        Assert.assertEquals(dog1.getWeight(), tmpWeight);
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void setWeightForDogZero() throws RuntimeException {
+        Dog dog1 = new Dog();
         dog1.setWeight(0);
-        Assert.assertEquals(dog1.getWeight(), tmpWeight);
+    }
 
+    @Test
+    public void setWeightForDogPositive() {
+        Dog dog1 = new Dog();
         dog1.setWeight(1);
         Assert.assertEquals(dog1.getWeight(), 1);
     }
+
 
     @Test
     public void getForDog() {

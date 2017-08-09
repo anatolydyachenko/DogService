@@ -50,7 +50,7 @@ public class Dog {
         if (name.length() >= 1 && name.length() <= 100) {
             this.name = name;
         } else {
-            System.out.println("Name should has length in range 1-100. Value is not updated to next one: " + name);
+            throw new RuntimeException("Name should has length in range 1-100. Value is not updated to next one: " + name);
         }
 
     }
@@ -68,13 +68,11 @@ public class Dog {
             if (dateOfBirthDate.before(currentDate)) {
                 this.dateOfBirth = dateOfBirth;
             } else {
-                System.out.println("DateOfBirth should be before current date. Value is not updated. DateOfBirth date: " + dateOfBirth + ". Current date: " + simpleDateFormat.format(new Date()));
+                throw new RuntimeException("DateOfBirth should be before current date. Value is not updated. DateOfBirth date: " + dateOfBirth + ". Current date: " + simpleDateFormat.format(new Date()));
             }
 
         } catch (ParseException e) {
             throw new RuntimeException("Date has incorrect format. It should be dd.MM.yyyy", e); // todo create Validation exception, use for all setters
-            //System.out.println("Date has incorrect format. It should be dd.MM.yyyy, but it is: \"" + dateOfBirth + "\". Value is not updated.");
-//            System.out.println(e);
         }
     }
 
@@ -86,7 +84,7 @@ public class Dog {
         if (height > 0) {
             this.height = height;
         } else {
-            System.out.println("Height should be positive: " + height + ". Value is not updated");
+            throw new RuntimeException("Height should be positive: " + height + ". Value is not updated");
         }
     }
 
@@ -98,7 +96,7 @@ public class Dog {
         if (weight > 0) {
             this.weight = weight;
         } else {
-            System.out.println("Weight should be positive: " + weight + ". Value is not updated");
+            throw new RuntimeException("Weight should be positive: " + weight + ". Value is not updated");
         }
     }
 }
